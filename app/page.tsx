@@ -40,6 +40,7 @@ export default function Home() {
       }
     } catch (err) {
       setError("An error occurred while processing the URL");
+      console.error("Error:", err);
     } finally {
       setLoading(false);
     }
