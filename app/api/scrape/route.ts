@@ -13,7 +13,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // Step 1: Scrape the blog post for raw text (for display purposes)
     const scrapeResponse = await axios.get(url);
     const $ = cheerio.load(scrapeResponse.data);
     const scrapedText = $("p, h1, h2, h3, h4, h5, h6")
@@ -28,43 +27,69 @@ export async function POST(request: Request) {
       );
     }
 
-    // Step 2: Use RapidAPI article-extractor-and-summarizer
-    const rapidApiKey = process.env.RAPIDAPI_KEY; // Set in .env.local
-    const summaryResponse = await axios.get(
-      "https://article-extractor-and-summarizer.p.rapidapi.com/summarize",
-      {
-        params: { url, length: "3" }, // Request a 3-sentence summary
-        headers: {
-          "X-RapidAPI-Key": rapidApiKey,
-          "X-RapidAPI-Host": "article-extractor-and-summarizer.p.rapidapi.com",
-        },
+    const rapidApiKey = process.env.RAPIDAPI_KEY;
+    console.log("RapidAPI Key:", rapidApiKey);
+    console.log("Received URL:", url);
+
+    try {
+      const summaryResponse = await axios.get(
+        "https://article-extractor-and-summarizer.p.rapidapi.com/summarize",
+        {
+          params: { url: encodeURIComponent(url), length: "3" },
+          headers: {
+            "X-RapidAPI-Key": rapidApiKey,
+            "X-RapidAPI-Host": "article-extractor-and-summarizer.p.rapidapi.com",
+          },
+        }
+      );
+      console.log("Headers sent:", {
+        "X-RapidAPI-Key": rapidApiKey,
+        "X-RapidAPI-Host": "article-extractor-and-summarizer.p.rapidapi.com",
+      });
+      const summary = summaryResponse.data.summary || "Summary not available.";
+      const translatedSummary = translateToUrdu(summary);
+
+      return NextResponse.json({
+        scrapedText: scrapedText.slice(0, 1000),
+        summary,
+        translatedSummary,
+      });
+    } catch (error: unknown) {
+      if (typeof error === "object" && error !== null && "response" in error && "message" in error) {
+        const responseData =
+          error &&
+          typeof error === "object" &&
+          "response" in error &&
+          error.response &&
+          typeof error.response === "object" &&
+          "data" in error.response
+            ? (error.response as { data?: { message?: string } }).data
+            : undefined;
+        console.error(
+          "Axios Error:",
+          responseData || (typeof error === "object" && error !== null && "message" in error ? (error as any).message : String(error))
+        );
+        return NextResponse.json(
+          { error: "Failed to summarize: " + (responseData?.message || (typeof error === "object" && error !== null && "message" in error ? (error as any).message : String(error))) },
+          { status: 500 }
+        );
+      } else {
+        console.error("Axios Error:", error);
+        return NextResponse.json(
+          { error: "Failed to summarize: " + String(error) },
+          { status: 500 }
+        );
       }
-    );
-
-    const summary = summaryResponse.data.summary || "Summary not available.";
-
-    // Step 3: Translate summary to Urdu (using dictionary-based approach for now)
-    const translatedSummary = translateToUrdu(summary);
-
-    return NextResponse.json({
-      scrapedText: scrapedText.slice(0, 1000), // Limit for display
-      summary,
-      translatedSummary,
-    });
-  } catch (error: unknown) {
-    console.error(error);
-    let errorMessage = "Failed to scrape or summarize the URL";
-    if (error && typeof error === "object" && "message" in error) {
-      errorMessage = (error as { message?: string }).message || errorMessage;
     }
+  } catch (error) {
+    console.error(error);
     return NextResponse.json(
-      { error: errorMessage },
+      { error: "Failed to scrape or process the URL" },
       { status: 500 }
     );
   }
 }
 
-// Dictionary-based Urdu translation (same as before)
 function translateToUrdu(text: string): string {
   const dictionary: { [key: string]: string } = {
     the: "دی",
@@ -77,7 +102,6 @@ function translateToUrdu(text: string): string {
     for: "کے لیے",
     on: "پر",
     with: "کے ساتھ",
-    // Add more words as needed
   };
 
   let translated = text.toLowerCase();
