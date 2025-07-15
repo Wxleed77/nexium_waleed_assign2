@@ -1,4 +1,3 @@
-// internship/assignment-2/app/api/scrape/route.ts
 import { NextResponse } from "next/server";
 import axios, { AxiosError } from "axios";
 
@@ -28,7 +27,7 @@ export async function POST(request: Request) {
 
     const options = {
       method: "GET",
-      url: "https://article-extractor-and-summarizer.p.rapidapi.com/summarize",
+      url: "https://article-extractor-and-summarizer.p.rapidapi.com/summarize  ",
       params: {
         url: url, // <--- CHANGE THIS LINE: Remove encodeURIComponent
         html: "true",
