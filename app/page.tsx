@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Loader2, Link, FileText, AlertCircle, CheckCircle2, Globe } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -49,31 +49,31 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 flex items-center justify-center p-6">
+    <div className="min-h-screen bg-gradient-to-br from-[#CADCFC] via-[#E8F1FE] to-[#CADCFC] flex items-center justify-center p-6">
       {/* Subtle background pattern */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(17,24,39,0.05),transparent_50%)]"></div>
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(0,36,107,0.05),transparent_50%)]"></div>
       
       <div className="w-full max-w-4xl relative z-10">
         {/* Header Section */}
         <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-slate-900 rounded-2xl mb-6 shadow-lg">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-[#00246B] rounded-2xl mb-6 shadow-lg">
             <Globe className="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-4xl font-bold text-slate-900 mb-3">
+          <h1 className="text-4xl font-bold text-[#00246B] mb-3">
             Article Summarizer
           </h1>
-          <p className="text-slate-600 text-lg max-w-2xl mx-auto">
+          <p className="text-[#00246B]/70 text-lg max-w-2xl mx-auto">
             Transform web articles into clear, concise Urdu summaries
           </p>
         </div>
 
         {/* Main Card */}
-        <Card className="bg-white/80 backdrop-blur-xl border border-slate-200/50 shadow-xl rounded-3xl overflow-hidden">
+        <Card className="bg-white/90 backdrop-blur-xl border border-[#CADCFC] shadow-xl rounded-3xl overflow-hidden">
           <CardContent className="p-8 md:p-12">
             {/* Input Form */}
             <form onSubmit={handleSubmit} className="space-y-6 mb-8">
               <div className="space-y-3">
-                <Label htmlFor="url" className="text-slate-700 font-medium text-base flex items-center gap-2">
+                <Label htmlFor="url" className="text-[#00246B] font-medium text-base flex items-center gap-2">
                   <Link className="w-4 h-4" />
                   Article URL
                 </Label>
@@ -85,14 +85,14 @@ export default function Home() {
                       value={url}
                       onChange={(e) => setUrl(e.target.value)}
                       placeholder="https://example.com/article"
-                      className="bg-slate-50/80 border-slate-200 text-slate-900 placeholder-slate-500 focus:ring-2 focus:ring-slate-900 focus:border-slate-900 transition-all duration-200 px-4 py-3 text-base rounded-xl h-12"
+                      className="bg-[#CADCFC]/30 border-[#CADCFC] text-[#00246B] placeholder-[#00246B]/50 focus:ring-2 focus:ring-[#00246B] focus:border-[#00246B] transition-all duration-200 px-4 py-3 text-base rounded-xl h-12"
                       required
                     />
                   </div>
                   <Button
                     type="submit"
                     disabled={loading}
-                    className="bg-slate-900 hover:bg-slate-800 text-white font-medium py-3 px-8 rounded-xl shadow-sm transition-all duration-200 flex items-center justify-center gap-2 h-12 min-w-[140px]"
+                    className="bg-[#00246B] hover:bg-[#00246B]/90 text-white font-medium py-3 px-8 rounded-xl shadow-sm transition-all duration-200 flex items-center justify-center gap-2 h-12 min-w-[140px]"
                   >
                     {loading ? (
                       <>
@@ -128,23 +128,23 @@ export default function Home() {
               <div className="animate-in slide-in-from-bottom-4 duration-500">
                 {/* Success indicator */}
                 <div className="flex items-center gap-2 mb-4">
-                  <CheckCircle2 className="w-5 h-5 text-green-600" />
-                  <span className="text-green-700 font-medium">Summary generated successfully</span>
+                  <CheckCircle2 className="w-5 h-5 text-[#00246B]" />
+                  <span className="text-[#00246B] font-medium">Summary generated successfully</span>
                 </div>
                 
                 {/* Summary Card */}
-                <div className="bg-slate-50/80 backdrop-blur-sm border border-slate-200/50 rounded-2xl p-6 md:p-8">
+                <div className="bg-[#CADCFC]/30 backdrop-blur-sm border border-[#CADCFC]/50 rounded-2xl p-6 md:p-8">
                   <div className="flex items-center gap-3 mb-6">
-                    <div className="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center">
+                    <div className="w-8 h-8 bg-[#00246B] rounded-lg flex items-center justify-center">
                       <FileText className="w-4 h-4 text-white" />
                     </div>
-                    <h2 className="text-xl font-semibold text-slate-900">
+                    <h2 className="text-xl font-semibold text-[#00246B]">
                       خلاصہ (Summary)
                     </h2>
                   </div>
                   
                   <div className="prose max-w-none">
-                    <p className="text-slate-700 text-base leading-relaxed text-right font-urdu whitespace-pre-wrap">
+                    <p className="text-[#00246B]/80 text-base leading-relaxed text-right font-urdu whitespace-pre-wrap">
                       {summary}
                     </p>
                   </div>
@@ -156,7 +156,7 @@ export default function Home() {
 
         {/* Footer */}
         <div className="text-center mt-8">
-          <p className="text-slate-500 text-sm">
+          <p className="text-[#00246B]/60 text-sm">
             Powered by AI • Fast & Accurate Summarization
           </p>
         </div>
